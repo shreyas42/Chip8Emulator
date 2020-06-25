@@ -22,6 +22,7 @@ int main(int argc, char **argv)
         /* Poll for events and store it in the event variable */
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
+                /* A goto?? Nani?? */
                 goto out;
             }
         }
