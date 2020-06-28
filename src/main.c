@@ -1,17 +1,26 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "SDL2/SDL.h"
+#include "chip8.h"
+#include "chip8keyboard.h"
 
+const char keymap[] = {
+    SDLK_0, SDLK_1, SDLK_2, SDLK_3,
+    SDLK_4, SDLK_5, SDLK_6, SDLK_7,
+    SDLK_8, SDLK_9, SDLK_a, SDLK_b,
+    SDLK_c, SDLK_d, SDLK_e, SDLK_f,
+};
 int main(int argc, char **argv)
 {
+    struct chip8 chip8;
     /* initialize SDL */
     SDL_Init(SDL_INIT_EVERYTHING);
-    
     /* create an SDL window */
     SDL_Window *window = SDL_CreateWindow(
-        "Chip8 Window", /* window name */
+        EMULATOR_WINDOW_TITLE, /* window name */
         SDL_WINDOWPOS_UNDEFINED, /* starting x-cordinate */
         SDL_WINDOWPOS_UNDEFINED, /* starting y-coordinate */
-        640, 320, SDL_WINDOW_SHOWN /* dimensions and window flags */
+        EMULATOR_WINDOW_WIDTH, EMULATOR_WINDOW_HEIGHT, SDL_WINDOW_SHOWN /* dimensions and window flags */
     );
 
     /* creating a renderer */
@@ -21,9 +30,23 @@ int main(int argc, char **argv)
         SDL_Event event;
         /* Poll for events and store it in the event variable */
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                /* A goto?? Nani?? */
-                goto out;
+            switch (event.type) {
+                case SDL_QUIT:
+                    goto out;
+                case SDL_KEYDOWN: {
+                    char key = event.key.keysym.sym;
+                    int vkey = chip8_keyboard_map(keymap, key);
+                    if (vkey != -1)
+                        chip8_keypress_down(&chip8.keyboard, vkey);
+                    break;
+                }
+                case SDL_KEYUP: {
+                    char key = event.key.keysym.sym;
+                    int vkey = chip8_keyboard_map(keymap, key);
+                    if (vkey != -1)
+                        chip8_keypress_up(&chip8.keyboard, vkey);
+                    break;
+                }
             }
         }
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); /* setting the color to black */
