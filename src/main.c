@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <Windows.h>
 #include "SDL2/SDL.h"
 #include "chip8.h"
 #include "chip8keyboard.h"
+#include "chip8display.h"
 
 const char keymap[] = {
     SDLK_0, SDLK_1, SDLK_2, SDLK_3,
@@ -12,7 +14,13 @@ const char keymap[] = {
 };
 int main(int argc, char **argv)
 {
+    /* initialize the Chip8 interpreter */
     struct chip8 chip8;
+    chip8_init(&chip8);
+    chip8.registers.ST = 30;
+    chip8_pixel_set(&chip8.display, 1, 1);
+    bool collided = chip8_display_draw_sprite(&chip8.display, 0, 0, chip8.memory.memory, CHIP8_DEFAULT_CHARSET_BYTES);
+    printf("%i\n", (int)collided);
     /* initialize SDL */
     SDL_Init(SDL_INIT_EVERYTHING);
     /* create an SDL window */
@@ -51,22 +59,41 @@ int main(int argc, char **argv)
         }
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0); /* setting the color to black */
         SDL_RenderClear(renderer); /* paint over the screen with black */
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
-        /* creating a rectangle that at pos (0,0) that is 4o
-         * in height and width
-         */
-        SDL_Rect r;
-        r.x = 0;
-        r.y = 0;
-        r.w = 40;
-        r.h = 40;
-        /* draw the rectangle to the display */
-        /* SDL_RenderDrawRect - hollow rectangle 
-         * SDL_RenderFillRect - solid rectangle
-         */
-        SDL_RenderFillRect(renderer, &r);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0); /* setting draw color to white */
+
+        for (int x = 0 ; x < CHIP8_WIDTH ; x++) {
+            for (int y = 0 ; y < CHIP8_HEIGHT ; y++) {
+                if (chip8_pixel_is_set(&chip8.display, x, y)) {
+                    SDL_Rect r;
+                    /* scale up the pixel by using rect and window multiplier */
+                    r.x = x * CHIP8_WINDOW_MULTIPLIER;
+                    r.y = y * CHIP8_WINDOW_MULTIPLIER;
+                    r.w = CHIP8_WINDOW_MULTIPLIER;
+                    r.h = CHIP8_WINDOW_MULTIPLIER;
+                    /* draw the rectangle to the display */
+                    /* SDL_RenderDrawRect - hollow rectangle 
+                    * SDL_RenderFillRect - solid rectangle
+                    */
+                    SDL_RenderFillRect(renderer, &r);
+
+                }
+            }
+        }
         /* present the changes */
         SDL_RenderPresent(renderer);
+        /* simulating the delay timer - 
+         * decrement the DT by 1 every 100ms
+         */
+        if (chip8.registers.DT > 0) {
+            Sleep(100);
+            chip8.registers.DT -= 1;
+        }
+
+        /* simluating the sound timer */
+        if (chip8.registers.ST > 0) {
+            Beep(1500, 100 * chip8.registers.ST);
+            chip8.registers.ST = 0;
+        }
     }
 
 out:

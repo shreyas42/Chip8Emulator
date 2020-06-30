@@ -11,6 +11,6 @@ struct chip8_keyboard {
 int chip8_keyboard_map(const char *map, char key);
 void chip8_keypress_down(struct chip8_keyboard *keyboard, int key);
 void chip8_keypress_up(struct chip8_keyboard *keyboard, int key);
-bool chip8_is_key_down(struct chip8_keyboard *keyboard, int key);
+bool chip8_key_is_down(struct chip8_keyboard *keyboard, int key);
 
 #endif

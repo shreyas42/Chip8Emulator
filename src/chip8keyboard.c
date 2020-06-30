@@ -1,5 +1,5 @@
-#include "chip8keyboard.h"
 #include <assert.h>
+#include "chip8keyboard.h"
 
 static void chip8_keyboard_check_bounds(int key)
 {
@@ -27,7 +27,7 @@ void chip8_keypress_up(struct chip8_keyboard *keyboard, int key)
     keyboard->keyboard[key] = false;
 }
 
-bool chip8_is_key_down(struct chip8_keyboard *keyboard, int key)
+bool chip8_key_is_down(struct chip8_keyboard *keyboard, int key)
 {
     chip8_keyboard_check_bounds(key);
     return keyboard->keyboard[key];

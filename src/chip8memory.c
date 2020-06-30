@@ -1,5 +1,5 @@
-#include "chip8memory.h"
 #include <assert.h>
+#include "chip8memory.h"
 
 static void chip8_is_memory_in_bounds(int index)
 {

@@ -22,5 +22,5 @@ $(OBJ)/%.o: $(SRC)/%.c
 
 .PHONY: clean
 clean:
-	del build\*
+	del build\*.o
 	del bin\main.exe
