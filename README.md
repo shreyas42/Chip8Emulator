@@ -34,5 +34,5 @@ The Chip-8 features a simple ISA - originally consisting of 36 instructions. The
 After the program has been successfully built, you can run the executable located in the **bin** folder. Roms for Space Invaders and Pong have also been provided, but keep in mind that Space Invaders currently has some issues with the game speed.
 
 ## Useful Links:
-* You can find the tutorial I followed here: [Creating a Chip-8 Emulator in C.](https://www.udemy.com/course/creating-a-chip-8-emulator-in-c/?utm_source=adwords&utm_medium=udemyads&utm_campaign=DSA_Catchall_la.EN_cc.INDIA&utm_content=deal4584&utm_term=_._ag_82569850245_._ad_437477497173_._kw__._de_c_._dm__._pl__._ti_dsa-406594358574_._li_9062040_._pd__._&matchtype=b&gclid=CjwKCAjwltH3BRB6EiwAhj0IUJx6Q0h9LsTaJWT_jKYvHUHpqAE9_HBy1xVniyH7Yo7UftwHC00T8BoCYjcQAvD_BwE)
-* [Chip-8 Reference Guide, including details about the ISA and hardware.](https://www.udemy.com/course/creating-a-chip-8-emulator-in-c/) 
+* You can find the tutorial I followed here: [Creating a Chip-8 Emulator in C.](https://www.udemy.com/course/creating-a-chip-8-emulator-in-c/)
+* [Chip-8 Reference Guide, including details about the ISA and hardware.](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM)
