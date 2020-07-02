@@ -1,5 +1,10 @@
 ## A simple Chip-8 Emulator for Windows written in C
 
+<p align="center">
+  <img align="center" width="450" height="400" src="https://github.com/shreyas42/Chip8Emulator/blob/master/chip8invaders.PNG">
+  <img align="left" width="450" height="400" src="https://github.com/shreyas42/Chip8Emulator/blob/master/chip8pong.PNG">
+ </p>
+ 
 Chip8 is an interpreter from the 1970s that was used to develop games like Space Invaders and Pong. This project implements the Chip-8 ISA as well as virtual hardware for the keyboard and display.
 
 The Chip-8 features a simple ISA - originally consisting of 36 instructions. The Super Chip-48 extended this to 46. This project implements only the Chip-8 ISA and ignores the Super Chip-48 instructions.
@@ -29,5 +34,4 @@ After the program has been successfully built, you can run the executable locate
 
 ## Useful Links:
 * You can find the tutorial I followed here: [Creating a Chip-8 Emulator in C.](https://www.udemy.com/course/creating-a-chip-8-emulator-in-c/?utm_source=adwords&utm_medium=udemyads&utm_campaign=DSA_Catchall_la.EN_cc.INDIA&utm_content=deal4584&utm_term=_._ag_82569850245_._ad_437477497173_._kw__._de_c_._dm__._pl__._ti_dsa-406594358574_._li_9062040_._pd__._&matchtype=b&gclid=CjwKCAjwltH3BRB6EiwAhj0IUJx6Q0h9LsTaJWT_jKYvHUHpqAE9_HBy1xVniyH7Yo7UftwHC00T8BoCYjcQAvD_BwE)
-* [Chip-8 Reference Guide, including details about the ISA and hardware.](http://devernay.free.fr/hacks/chip8/C8TECH10.HTM)## A simple Chip-8 Emulator for Windows written in C
-You can find the tutorial I followed here: [Creating a Chip-8 Emulator in C](https://www.udemy.com/course/creating-a-chip-8-emulator-in-c/?utm_source=adwords&utm_medium=udemyads&utm_campaign=DSA_Catchall_la.EN_cc.INDIA&utm_content=deal4584&utm_term=_._ag_82569850245_._ad_437477497173_._kw__._de_c_._dm__._pl__._ti_dsa-406594358574_._li_9062040_._pd__._&matchtype=b&gclid=CjwKCAjwltH3BRB6EiwAhj0IUJx6Q0h9LsTaJWT_jKYvHUHpqAE9_HBy1xVniyH7Yo7UftwHC00T8BoCYjcQAvD_BwE 
+* [Chip-8 Reference Guide, including details about the ISA and hardware.](https://www.udemy.com/course/creating-a-chip-8-emulator-in-c/) 
