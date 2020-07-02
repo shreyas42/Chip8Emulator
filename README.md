@@ -1,10 +1,11 @@
 ## A simple Chip-8 Emulator for Windows written in C
-
 <p align="center">
-  <img align="center" width="450" height="400" src="https://github.com/shreyas42/Chip8Emulator/blob/master/chip8invaders.PNG">
-  <img align="left" width="450" height="400" src="https://github.com/shreyas42/Chip8Emulator/blob/master/chip8pong.PNG">
- </p>
- 
+  <img src="chip8invaders.PNG">
+</p>
+<p align="center">
+  <img src="chip8pong.PNG">
+</p>
+
 Chip8 is an interpreter from the 1970s that was used to develop games like Space Invaders and Pong. This project implements the Chip-8 ISA as well as virtual hardware for the keyboard and display.
 
 The Chip-8 features a simple ISA - originally consisting of 36 instructions. The Super Chip-48 extended this to 46. This project implements only the Chip-8 ISA and ignores the Super Chip-48 instructions.
