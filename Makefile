@@ -2,8 +2,8 @@ CC := gcc
 
 INCLUDES := -I ./include
 LIBS := -L ./lib
-LDFLAGS := -lmingw32 -lSDL2main -lSDL2
-CFLAGS := -g
+LDFLAGS := -lmingw32 -lSDL2main -lSDL2 -lm
+CFLAGS := -O3
 
 SRC := ./src
 OBJ := ./build

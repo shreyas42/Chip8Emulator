@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <memory.h>
 #include "chip8display.h"
 
 static void chip8_display_check_bounds(int x, int y)
@@ -10,6 +11,11 @@ void chip8_pixel_set(struct chip8_display *display, int x, int y)
 {
     chip8_display_check_bounds(x, y);
     display->pixels[y][x] = true;
+}
+
+void chip8_display_clear(struct chip8_display *display)
+{
+    memset(display->pixels, 0, sizeof(display->pixels));
 }
 
 bool chip8_pixel_is_set(struct chip8_display *display, int x, int y)

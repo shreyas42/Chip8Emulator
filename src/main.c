@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <stdbool.h>
 #include <Windows.h>
 #include "SDL2/SDL.h"
@@ -6,21 +7,47 @@
 #include "chip8keyboard.h"
 #include "chip8display.h"
 
-const char keymap[] = {
+const char keymap[CHIP8_MAX_KEYS] = {
     SDLK_0, SDLK_1, SDLK_2, SDLK_3,
     SDLK_4, SDLK_5, SDLK_6, SDLK_7,
     SDLK_8, SDLK_9, SDLK_a, SDLK_b,
     SDLK_c, SDLK_d, SDLK_e, SDLK_f,
 };
+
 int main(int argc, char **argv)
 {
+    /* Setting up the file to load the program from */
+    if (argc < 2) {
+        fprintf(stderr, "Correct usage: %s <File to load>\n", argv[0]);
+        return -1;
+    }
+
+    const char *filename = argv[1];
+    printf("Loading rom %s\n", filename);
+    FILE *fp = fopen(filename, "rb");
+    if (!fp) {
+        fprintf(stderr, "Failed to open file!\n");
+        return -1;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp); /* get the size of the file, by returning current file position */
+    fseek(fp, 0, SEEK_SET); /* reset the file offset */
+
+    char buf[size];
+    int res = fread(buf, size, 1, fp);
+    if (res != 1) {
+        printf("Failed to read file!\n");
+        fclose(fp);
+        return -1;
+    }
+
     /* initialize the Chip8 interpreter */
     struct chip8 chip8;
     chip8_init(&chip8);
-    chip8.registers.ST = 30;
-    chip8_pixel_set(&chip8.display, 1, 1);
-    bool collided = chip8_display_draw_sprite(&chip8.display, 0, 0, chip8.memory.memory, CHIP8_DEFAULT_CHARSET_BYTES);
-    printf("%i\n", (int)collided);
+    chip8_load(&chip8, buf, (size_t)size);
+    chip8_keyboard_set_keymap(&chip8.keyboard, keymap);
+
     /* initialize SDL */
     SDL_Init(SDL_INIT_EVERYTHING);
     /* create an SDL window */
@@ -43,14 +70,14 @@ int main(int argc, char **argv)
                     goto out;
                 case SDL_KEYDOWN: {
                     char key = event.key.keysym.sym;
-                    int vkey = chip8_keyboard_map(keymap, key);
+                    int vkey = chip8_keyboard_map(&chip8.keyboard, key);
                     if (vkey != -1)
                         chip8_keypress_down(&chip8.keyboard, vkey);
                     break;
                 }
                 case SDL_KEYUP: {
                     char key = event.key.keysym.sym;
-                    int vkey = chip8_keyboard_map(keymap, key);
+                    int vkey = chip8_keyboard_map(&chip8.keyboard, key);
                     if (vkey != -1)
                         chip8_keypress_up(&chip8.keyboard, vkey);
                     break;
@@ -79,25 +106,32 @@ int main(int argc, char **argv)
                 }
             }
         }
+        /* throttle the frame-rate */
+        SDL_Delay(1);
         /* present the changes */
         SDL_RenderPresent(renderer);
         /* simulating the delay timer - 
          * decrement the DT by 1 every 100ms
          */
         if (chip8.registers.DT > 0) {
-            Sleep(100);
+            Sleep(1);
             chip8.registers.DT -= 1;
         }
 
         /* simluating the sound timer */
         if (chip8.registers.ST > 0) {
-            Beep(1500, 100 * chip8.registers.ST);
+            Beep(9000, 10 * chip8.registers.ST);
             chip8.registers.ST = 0;
         }
+
+        unsigned short opcode = chip8_memory_get_short(&chip8.memory, chip8.registers.PC);
+        chip8.registers.PC += CHIP8_INSTRUCTION_WIDTH; /* move to next instruction, instructions are 2 bytes wide */
+        chip8_exec(&chip8, opcode);
     }
 
 out:
     /* destroy window */
     SDL_DestroyWindow(window);
+    fclose(fp);
     return 0;
 }

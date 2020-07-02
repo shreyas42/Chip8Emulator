@@ -6,10 +6,15 @@ static void chip8_keyboard_check_bounds(int key)
     assert(key >= 0 && key < CHIP8_MAX_KEYS);
 }
 
-int chip8_keyboard_map(const char *map, char key)
+void chip8_keyboard_set_keymap(struct chip8_keyboard *keyboard, const char *keymap)
+{
+    keyboard->keymap = keymap;
+}
+
+int chip8_keyboard_map(struct chip8_keyboard *keyboard, char key)
 {
     for (int i = 0 ; i < CHIP8_MAX_KEYS ; i++) {
-        if (map[i] == key)
+        if (keyboard->keymap[i] == key)
             return i;
     }
     return -1;
